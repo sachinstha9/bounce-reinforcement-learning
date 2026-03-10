@@ -1,42 +1,42 @@
 import pygame 
-import math
 
-width = 800
-height = 600
+WIDTH = 1000
+HEIGHT = 1000
+
+pygame.init()
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+FPS = 60
 
 class Game:
     def __init__(self):
-        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.clock = pygame.time.Clock()
 
-        self.screen = pygame.display.set_mode((width, height))
-        self.clock = pygame.tick.Clock()
+        self.paddleWidth = 100
+        self.paddleHeight = 10
+        self.paddlePosition = [(WIDTH / 2)- (self.paddleWidth / 2), 800]
+        self.paddleColor = WHITE
+        self.paddleSpeed = 10
 
-        self.car_position = [400, 500]
-        self.angle = 0
-        self.speed = 4        
+        self.ballSizeRadius = 20
+        self.ballPosition = [0, 0]
+        self.ballColor = WHITE
+        self.ballSpeed = [10, 8]
 
         self.reset()
 
     def reset(self):
-        self.car_position = [400, 500]
-        return self.get_state()
+        self.ballPosition = [0, 0]
+        self.paddlePosition = [(WIDTH / 2)- (self.paddleWidth / 2), 700]
     
-    def car_update(self, action):
-        if action == 0:
-            self.angle -= 0.1
-        elif action == 2:
-            self.angle += 0.1
+    def draw(self):
+        self.screen.fill(BLACK)
 
-        self.car_position[0] += math.cos(self.angle) * self.speed
-        self.car_position[1] += math.sin(self.angle) * self.speed
+        pygame.draw.rect(self.screen, WHITE, (self.paddlePosition[0], self.paddlePosition[1], self.paddleWidth, self.paddleHeight))
 
-    def get_state(self):
-        return [
-            self.car_position[0] / width,
-            self.car_position[1] / height,
-            math.cos(self.angle),
-            math.sin(self.angle),
-            self.speed / 10
-        ]
-    
+        pygame.display.update()
+        self.clock.tick(FPS)
 
